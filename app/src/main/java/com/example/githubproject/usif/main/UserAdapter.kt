@@ -12,12 +12,14 @@ class UserAdapter(private val list: List<ItemsItem>): RecyclerView.Adapter<UserA
 
     inner class UserViewHolder(val binding: ListUserBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(user: ItemsItem){
+
             binding.apply {
-                Glide.with((itemView)).load(user.avatarUrl)
+                userName.text = user.login
+                Glide.with(itemView.context).load(user.avatarUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .centerCrop()
                     .into(userPic)
-                userName.text = user.login
+
             }
         }
     }
@@ -31,6 +33,7 @@ class UserAdapter(private val list: List<ItemsItem>): RecyclerView.Adapter<UserA
 
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+
         holder.bind(list[position])
     }
 }

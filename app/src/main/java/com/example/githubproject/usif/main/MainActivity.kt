@@ -2,11 +2,13 @@ package com.example.githubproject.usif.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubproject.R
 import com.example.githubproject.data.model.ItemsItem
 import com.example.githubproject.databinding.ActivityMainBinding
 
@@ -19,16 +21,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(Binding.root)
-        viewModel.SearchUsersSetter("ghari")
+        println("panjang list user COBSZ : "+viewModel._listUser.value?.size)
+
+//        adapter.notifyDataSetChanged()
+
+
+//        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(UserViewModel::class.java)
 
         adapter = UserAdapter(emptyList())
-        adapter.notifyDataSetChanged()
-        //viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(UserViewModel::class.java)
+        viewModel.SearchUsersSetter("ghari")
+        println("panjang list user 1 : "+viewModel.listUser.value?.size)
 
         Binding.apply {
-            userList.layoutManager = LinearLayoutManager(this@MainActivity)
-            userList.setHasFixedSize(true)
-            userList.adapter = adapter
+            rvUserlist.adapter = adapter
+            rvUserlist.layoutManager = LinearLayoutManager(this@MainActivity)
+            rvUserlist.setHasFixedSize(true)
 
             searchBtn.setOnClickListener {
                 searchUser()
@@ -42,12 +49,17 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
-        viewModel.getSrcUser().observe(this){
-            user -> setList(user)
+        supportActionBar?.apply {
+            title = adapter.itemCount.toString()
+            setDisplayHomeAsUpEnabled(true)
+        }
+        viewModel._listUser.observe(this){
+                user -> Log.d("anjayanai",user.toString())
+            setList(user)
         }
 
-        viewModel.isLoad().observe(this){
+
+        viewModel._isLoading.observe(this){
             showLoading(it)
         }
 
@@ -55,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setList(data: List<ItemsItem>) {
         adapter = UserAdapter(data)
-        Binding.userList.adapter = adapter
+        Binding.rvUserlist.adapter = adapter
 //        adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
 //            override fun onItemClicked(data: ItemsItem) {
 //                Intent(this@MainActivity, DetailUserActivity::class.java).also {
