@@ -1,6 +1,5 @@
 package com.example.githubproject.usif.main
 
-import android.content.ClipData.Item
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,11 +13,9 @@ import retrofit2.Response
 
 class UserViewModel:ViewModel() {
 
-    val listUser = MutableLiveData<List<ItemsItem>>()
-    val _listUser : LiveData<List<ItemsItem>> = listUser
+    private val listUser = MutableLiveData<List<ItemsItem>>()
 
-    val isLoading = MutableLiveData<Boolean>()
-    val _isLoading : LiveData<Boolean> = isLoading
+    private val isLoading = MutableLiveData<Boolean>()
 
     fun SearchUsersSetter(query: String){
         isLoading.value = true
@@ -28,9 +25,6 @@ class UserViewModel:ViewModel() {
                 isLoading.value = false
                 if (response.isSuccessful){
                     listUser.value = response.body()?.items
-                    println("panjang livedta : "+_listUser.value?.size)
-
-//                    listUser.postValue(response.body()?.items)
                 }else{
                     Log.e("UserViewModel","Error: ${response.message()}")
                 }

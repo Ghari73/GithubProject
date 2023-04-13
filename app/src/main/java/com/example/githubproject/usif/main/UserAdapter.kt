@@ -9,9 +9,19 @@ import com.example.githubproject.data.model.ItemsItem
 import com.example.githubproject.databinding.ListUserBinding
 
 class UserAdapter(private val list: List<ItemsItem>): RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+    interface OnItemClickCallback {
+        fun onItemClicked(data: ItemsItem)
+    }
 
-    inner class UserViewHolder(val binding: ListUserBinding) : RecyclerView.ViewHolder(binding.root){
+    private var onItemClickCallback: OnItemClickCallback? = null
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+    inner class UserViewHolder(private val binding: ListUserBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(user: ItemsItem){
+            binding.root.setOnClickListener {
+                onItemClickCallback?.onItemClicked(user)
+            }
 
             binding.apply {
                 userName.text = user.login

@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">GithubProject</string>
+    <string name="app_name">Github Project 1</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Enter Username...</string>
+    <string name="tab_text_1">Followers</string>
+    <string name="tab_text_2">Following</string>
+    <string name="content_descPhoto">desc..</string>
+    <string name="data_not_found">Oopps..Data Not Found</string>
+
 </resources>

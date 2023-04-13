@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usif.main.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUserlist"
@@ -15,37 +14,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_errorMSG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/data_not_found"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.436"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/IV_errorMSG"
-        android:layout_width="57dp"
-        android:layout_height="53dp"
-        android:src="@drawable/baseline_search"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tv_errorMSG"
-        app:layout_constraintStart_toStartOf="@+id/tv_errorMSG"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.374"
-        tools:ignore="ContentDescription,ImageContrastCheck"
-        tools:visibility="visible" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/list_user"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -59,5 +29,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.512"
+        tools:visibility="visible" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_errorMSG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_not_found"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.193"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/IV_errorMSG"
+        android:layout_width="57dp"
+        android:layout_height="53dp"
+        android:src="@drawable/baseline_no_accounts_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_errorMSG"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="@+id/tv_errorMSG"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.122"
+        tools:ignore="ContentDescription,ImageContrastCheck"
         tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

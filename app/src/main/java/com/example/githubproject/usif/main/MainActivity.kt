@@ -1,98 +1,103 @@
 package com.example.githubproject.usif.main
 
+import android.app.SearchManager
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.KeyEvent
+import android.view.Menu
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.size
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubproject.R
 import com.example.githubproject.data.model.ItemsItem
 import com.example.githubproject.databinding.ActivityMainBinding
+import com.example.githubproject.usif.detail.UserDetailActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var Binding : ActivityMainBinding
     private val viewModel by viewModels<UserViewModel>()
     private lateinit var adapter: UserAdapter
-
+    private lateinit var srcQuery: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(Binding.root)
-        println("panjang list user COBSZ : "+viewModel._listUser.value?.size)
-
-//        adapter.notifyDataSetChanged()
-
-
-//        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(UserViewModel::class.java)
-
-        adapter = UserAdapter(emptyList())
         viewModel.SearchUsersSetter("ghari")
-        println("panjang list user 1 : "+viewModel.listUser.value?.size)
-
-        Binding.apply {
-            rvUserlist.adapter = adapter
-            rvUserlist.layoutManager = LinearLayoutManager(this@MainActivity)
-            rvUserlist.setHasFixedSize(true)
-
-            searchBtn.setOnClickListener {
-                searchUser()
-            }
-            searchBar.setOnKeyListener { view, i, keyEvent ->
-                if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER){
-                    searchUser()
-                    return@setOnKeyListener true
-                }
-                return@setOnKeyListener false
-            }
-
+        showListRV()
+        viewModel.getSrcUser().observe(this){
+                user -> setList(user)
         }
-        supportActionBar?.apply {
-            title = adapter.itemCount.toString()
-            setDisplayHomeAsUpEnabled(true)
-        }
-        viewModel._listUser.observe(this){
-                user -> Log.d("anjayanai",user.toString())
-            setList(user)
-        }
-
-
-        viewModel._isLoading.observe(this){
+        viewModel.isLoad().observe(this){
             showLoading(it)
         }
-
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.search).actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.queryHint = resources.getString(R.string.search_hint)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                srcQuery = query
+                val inputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, 0)
+                viewModel.SearchUsersSetter(srcQuery)
+                if (Binding.rvUserlist.size == 0) {
+                    showErrorMessage(true)
+                } else {
+                    showErrorMessage(false)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                srcQuery = newText
+                viewModel.SearchUsersSetter(srcQuery)
+                showErrorMessage(false)
+                return true
+            }
+        })
+        return true
+    }
+
+    private fun showListRV() {
+        adapter = UserAdapter(emptyList())
+        Binding.rvUserlist.adapter = adapter
+        val layoutManager = LinearLayoutManager(this)
+        Binding.rvUserlist.layoutManager = layoutManager
+        Binding.rvUserlist.setHasFixedSize(true)
+        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
+        Binding.rvUserlist.addItemDecoration(itemDecoration)
+    }
     private fun setList(data: List<ItemsItem>) {
         adapter = UserAdapter(data)
         Binding.rvUserlist.adapter = adapter
-//        adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
-//            override fun onItemClicked(data: ItemsItem) {
-//                Intent(this@MainActivity, DetailUserActivity::class.java).also {
-//                    it.putExtra(DetailUserActivity.EXTRA_NAME, data.login)
-//                    startActivity(it)
-//                }
-//            }
-//        })
-    }
-    private fun searchUser(){
-        Binding.apply {
-            val query = searchBar.text.toString()
-            if (query.isEmpty()) return
-            showLoading(true)
-            viewModel.SearchUsersSetter(query)
-        }
+        adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: ItemsItem) {
+                Intent(this@MainActivity, UserDetailActivity::class.java).also {
+                    it.putExtra(UserDetailActivity.EXTRA_NAME, data.login)
+                    startActivity(it)
+                }
+            }
+        })
     }
 
     private fun showLoading(state: Boolean){
-        if(state){
-            Binding.progressBar.visibility = View.VISIBLE
-        }else{
-            Binding.progressBar.visibility = View.GONE
-        }
+        if (state) View.VISIBLE else View.GONE
     }
 
+    private fun showErrorMessage(errorVisible: Boolean) {
+        Binding.IVErrorMSG.visibility = if (errorVisible) View.VISIBLE else View.INVISIBLE
+        Binding.tvErrorMSG.visibility = if (errorVisible) View.VISIBLE else View.INVISIBLE
+    }
 
 }
