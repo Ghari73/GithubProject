@@ -1,10 +1,13 @@
 <resources>
-    <string name="app_name">Github Project 1</string>
+    <string name="app_name">Github Project Advanced</string>
     <string name="search">Search</string>
     <string name="search_hint">Enter Username...</string>
     <string name="tab_text_1">Followers</string>
     <string name="tab_text_2">Following</string>
     <string name="content_descPhoto">desc..</string>
     <string name="data_not_found">Oopps..Data Not Found</string>
-
+    <string name="Fav_button">Favorite</string>
+    <string name="setting">Settings</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="added_yet">No favorite users added yet</string>
 </resources>

@@ -11,8 +11,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface Api {
-
-
     @GET("search/users")
     @Headers("Authorization: token ${BuildConfig.KEY}")
     fun getSrcUser(

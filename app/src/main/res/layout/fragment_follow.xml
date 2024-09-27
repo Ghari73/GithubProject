@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/list_user"/>
+        tools:listitem="@layout/list_user" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -31,23 +31,6 @@
         app:layout_constraintVertical_bias="0.512"
         tools:visibility="visible" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_errorMSG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/data_not_found"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.193"
-        tools:visibility="visible" />
-
     <ImageView
         android:id="@+id/IV_errorMSG"
         android:layout_width="57dp"
@@ -55,11 +38,26 @@
         android:src="@drawable/baseline_no_accounts_24"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tv_errorMSG"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="@+id/tv_errorMSG"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.122"
+        app:layout_constraintVertical_bias="0.25"
         tools:ignore="ContentDescription,ImageContrastCheck"
         tools:visibility="visible" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_errorMSG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:text="@string/data_not_found"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/IV_errorMSG"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@id/IV_errorMSG"
+        app:layout_constraintTop_toTopOf="@+id/IV_errorMSG"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

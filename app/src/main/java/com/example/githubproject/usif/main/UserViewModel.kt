@@ -4,47 +4,29 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.githubproject.api.ApiConfig
 import com.example.githubproject.data.model.ItemsItem
 import com.example.githubproject.data.model.UserResponse
+import com.example.githubproject.repository.FavUserRepository
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserViewModel:ViewModel() {
-
-    private val listUser = MutableLiveData<List<ItemsItem>>()
-
-    private val isLoading = MutableLiveData<Boolean>()
-
+class UserViewModel(private val repo: FavUserRepository) : ViewModel() {
     fun SearchUsersSetter(query: String){
-        isLoading.value = true
-        val client = ApiConfig.getApiService().getSrcUser(query)
-        client.enqueue(object : Callback<UserResponse>{
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                isLoading.value = false
-                if (response.isSuccessful){
-                    listUser.value = response.body()?.items
-                }else{
-                    Log.e("UserViewModel","Error: ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                isLoading.value = false
-                Log.d("Fail",t.message.toString())
-                t.printStackTrace()
-            }
-
-        })
+        viewModelScope.launch {
+            repo.getUser(query)
+        }
     }
 
     fun getSrcUser(): LiveData<List<ItemsItem>>{
-        return listUser
+        return repo.user
     }
 
 
     fun isLoad(): LiveData<Boolean>{
-        return isLoading
+        return repo.isLoading
     }
 }
